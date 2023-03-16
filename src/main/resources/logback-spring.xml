@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<configuration>
+	<property name="FILE_NAME" value="msp_registrasi_new" />
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>%-5level %d{HH:mm:ss.SSS} [%c] - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<appender name="FILE-ROLLING" class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${catalina.base}/logs/${FILE_NAME}.log</file>
+		<append>true</append>
+		<!-- Support multiple-JVM writing to the same log file -->
+		<prudent>true</prudent>
+		<rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+			<!-- rollover daily -->
+			<fileNamePattern>../logs/${FILE_NAME}-%d{yyyy-MM-dd}(%i).txt</fileNamePattern>
+			<!-- each file should be at most 100MB, keep 60 days worth of history, but at most 20GB -->
+			<maxFileSize>100MB</maxFileSize>
+			<maxHistory>60</maxHistory>
+			<totalSizeCap>20GB</totalSizeCap>
+		</rollingPolicy>
+		<encoder>
+			<pattern>%-5level %d{HH:mm:ss.SSS} [%c] - %X{id} - %msg%n</pattern>
+		</encoder>
+	</appender>
+	<root level="INFO">
+		<appender-ref ref="FILE-ROLLING" />
+		<appender-ref ref="STDOUT" />
+	</root>
+</configuration>
