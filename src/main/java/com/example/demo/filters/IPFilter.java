@@ -13,16 +13,12 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.web.servlet.FilterRegistrationBean;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 @Component
-@PropertySource(value = { "classpath:application.properties" })
+// @PropertySource(value = { "classpath:application.properties" })
 public class IPFilter extends OncePerRequestFilter {
 
   private static final Logger log = LoggerFactory.getLogger(IPFilter.class);
@@ -46,8 +42,6 @@ public class IPFilter extends OncePerRequestFilter {
   }
 
   private boolean isAllowed(String ipAddress) {
-    log.info("allowedIp = " + allowedIp);
-
     if (StringUtils.isBlank(allowedIp)) {
       return true;
     } else {
@@ -63,17 +57,6 @@ public class IPFilter extends OncePerRequestFilter {
       } else {
         return true;
       }
-    }
-  }
-
-  @Configuration
-  public class AppConfig {
-    @Bean
-    public FilterRegistrationBean<IPFilter> ipFilter() {
-      FilterRegistrationBean<IPFilter> registrationBean = new FilterRegistrationBean<>();
-      registrationBean.setFilter(new IPFilter());
-      registrationBean.addUrlPatterns("/*");
-      return registrationBean;
     }
   }
 }
